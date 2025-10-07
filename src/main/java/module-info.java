@@ -1,8 +1,8 @@
-module pongfx.pongfx {
+module pongfx {
     requires javafx.controls;
     requires javafx.fxml;
 
 
-    opens pongfx.pongfx to javafx.fxml;
-    exports pongfx.pongfx;
+    opens pongfx to javafx.fxml;
+    exports pongfx;
 }
