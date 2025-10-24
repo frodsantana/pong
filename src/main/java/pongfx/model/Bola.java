@@ -11,14 +11,14 @@ public class Bola {
 
     private double x, y;
     private double direcaoX, direcaoY;
-    private double speedBola = 12.5;
+    private double speedBola = 10;
 
     public Bola(int x, int y) {
         this.x = x;
         this.y = y;
 
         // Lógica de ângulo inicial
-        int angulo = new Random().nextInt(70);
+        int angulo = new Random().nextInt(80);
         direcaoX = Math.cos(Math.toRadians(angulo));
         direcaoY = Math.sin(Math.toRadians(angulo));
 
@@ -32,7 +32,6 @@ public class Bola {
             direcaoY *= -1;
             // speedBola += 0.5; // Aumentar speed (opcional)
         }
-
         // --- Lógica de Mapeamento e Colisão (usando apenas Rectangle2D) ---
 
         // 1. Cria o retângulo da bola na próxima posição

@@ -40,9 +40,6 @@ public class PongView extends Pane {
     private VBox gameOverBox;
     private Text gameOverTitle;
     private Button backToMenuFromGameOverButton;
-    // O botão 'Jogar Novamente' foi movido para a tela 'Enter Name' ou será re-utilizado.
-    // Para simplificar, vamos mover a decisão de jogar novamente para o Menu,
-    // e o Game Over agora SÓ leva para Enter Name.
 
     // NOVO: Componentes da Tela de Registro de Nome (Enter Name)
     private VBox enterNameBox;
@@ -59,7 +56,7 @@ public class PongView extends Pane {
         setupMenuElements();
         setupScoreboardElements();
         setupGameOverElements();
-        setupEnterNameElements(); // NOVO: Configuração da tela de registro
+        setupEnterNameElements(); // Configuração da tela de registro
 
         showMenu();
     }
@@ -99,20 +96,24 @@ public class PongView extends Pane {
         multiplierText.setY(40);
         this.getChildren().add(multiplierText);
 
-        // Linha central
+        // Linha central REMOVIDA
+        /*
         Rectangle centerLine = new Rectangle(GameState.LARGURA / 2 - 1, 0, 2, GameState.ALTURA);
         centerLine.setFill(Color.DARKGRAY);
         centerLine.setOpacity(0.5);
         this.getChildren().add(centerLine);
 
-        // Coloca a linha e os textos de score/multiplicador na frente
+        // Coloca a linha na frente/atrás dos elementos (agora removido)
         centerLine.toBack();
+        */
+
+        // Mantém os textos na frente
         scoreText.toFront();
         multiplierText.toFront();
     }
 
     private void setupMenuElements() {
-        titleText = new Text("PONG CLÁSSICO");
+        titleText = new Text("PONG");
         titleText.setFont(Font.font("Arial", 48));
         titleText.setFill(Color.WHITE);
 
@@ -167,7 +168,7 @@ public class PongView extends Pane {
         this.getChildren().add(gameOverBox);
     }
 
-    // NOVO: Configuração da Tela de Registro de Nome
+    // Configuração da Tela de Registro de Nome
     private void setupEnterNameElements() {
         enterNameTitle = new Text("REGISTRAR PONTUAÇÃO");
         enterNameTitle.setFont(Font.font("Arial", 32));
@@ -183,14 +184,19 @@ public class PongView extends Pane {
         nameInputField.setFont(Font.font("Monospaced", 18));
         nameInputField.setAlignment(Pos.CENTER);
 
-        // Limita o input a 3 caracteres e apenas letras maiúsculas ou números
+        // MODIFICADO: Limita o input a 3 caracteres e permite letras (maiúsculas/minúsculas) e números
         nameInputField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.length() > 3) {
-                nameInputField.setText(oldValue);
-            } else if (!newValue.matches("[A-Z0-9]*")) {
-                nameInputField.setText(newValue.replaceAll("[^A-Z0-9]", "").toUpperCase());
-            } else {
-                nameInputField.setText(newValue.toUpperCase());
+            // 1. Filtra para permitir apenas caracteres alfanuméricos (mantendo a caixa)
+            String filteredValue = newValue.replaceAll("[^a-zA-Z0-9]", "");
+
+            // 2. Limita o comprimento a 3
+            if (filteredValue.length() > 3) {
+                filteredValue = filteredValue.substring(0, 3);
+            }
+
+            // 3. Define o texto filtrado no campo se for diferente
+            if (!newValue.equals(filteredValue)) {
+                nameInputField.setText(filteredValue);
             }
         });
 
@@ -213,7 +219,7 @@ public class PongView extends Pane {
         inimigoRect.setVisible(true);
         bolaRect.setVisible(true);
         scoreText.setVisible(true);
-        multiplierText.setVisible(true);
+        multiplierText.setVisible(false);
     }
 
     private void hideGameElements() {
@@ -265,7 +271,7 @@ public class PongView extends Pane {
         gameOverBox.setVisible(true);
     }
 
-    // NOVO: Exibe a tela de Registro de Nome
+    // Exibe a tela de Registro de Nome
     public void showEnterName(GameState gameState) {
         hideAllScreenElements();
 
@@ -277,9 +283,7 @@ public class PongView extends Pane {
 
 
     public void atualizarView(GameState gameState) {
-        // Centraliza os textos de score/multiplicador (precisa ser feito a cada frame
-        // se o texto mudar, mas é ineficiente. É melhor centralizar a VBox que os contém,
-        // mas vamos manter assim por simplicidade no momento.)
+        // Centraliza os textos de score/multiplicador
         scoreText.setX(GameState.LARGURA / 2 - scoreText.getLayoutBounds().getWidth() / 2);
         multiplierText.setX(GameState.LARGURA / 2 - multiplierText.getLayoutBounds().getWidth() / 2);
 
@@ -309,7 +313,7 @@ public class PongView extends Pane {
     // Botão que leva do Game Over para Enter Name
     public Button getRegisterScoreButton() { return backToMenuFromGameOverButton; }
 
-    // NOVO: Getters para a tela de Registro de Nome
+    // Getters para a tela de Registro de Nome
     public TextField getNameInputField() { return nameInputField; }
     public Button getSaveScoreButton() { return saveScoreButton; }
 }
