@@ -21,16 +21,17 @@ public class PongApp extends Application {
         Scene scene = new Scene(view);
 
         // 4. Inicializa o Controller (liga Model e View)
+        // O Controller agora gerencia a transição de telas e a inicialização do Game Loop
         PongController controller = new PongController(gameState, view, scene);
 
         // Configura o Stage (Janela)
-        primaryStage.setTitle("PONG - JavaFX MVC");
+        primaryStage.setTitle("PONG");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
 
-        // 5. Inicia o Game Loop
-        controller.startGame();
+        // 5. O Game Loop não é iniciado aqui.
+        // Ele será iniciado pelo PongController quando o botão "Start Game" for clicado.
     }
 
     public static void main(String[] args) {

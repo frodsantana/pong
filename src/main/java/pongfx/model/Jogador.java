@@ -1,8 +1,8 @@
 package pongfx.model;
 
 public class Jogador {
-    public static final int LARGURA_JOGADOR = 4;
-    public static final int ALTURA_JOGADOR = 100;
+    public static final int LARGURA_JOGADOR = 7;
+    public static final int ALTURA_JOGADOR = 50;
     private static final int VELOCIDADE = 10;
 
     private double x, y;
